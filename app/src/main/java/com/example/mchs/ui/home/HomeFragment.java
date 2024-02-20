@@ -1,6 +1,8 @@
 package com.example.mchs.ui.home;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,18 +62,40 @@ public class HomeFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = name.getText().toString();
                 String msg = message.getText().toString();
-                new HttpRequestTask().execute(username, msg);
+                String selectedCategory = spinner.getSelectedItem().toString(); // Get selected category
+                new HttpRequestTask().execute(username, msg, selectedCategory);
 
             }
         });
 
         return root;
     }
+
+    private void showTip(String category) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Подсказка для категории " + category);
+
+        // Здесь вы можете установить сообщение в зависимости от категории
+        String message = "Это подсказка для категории " + category;
+        builder.setMessage(message);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Закройте диалог, когда пользователь нажмет OK
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -79,17 +104,21 @@ public class HomeFragment extends Fragment {
     }
 
     private class HttpRequestTask extends AsyncTask<String, Void, String> {
+        private String selectedCategory;
 
         @Override
         protected String doInBackground(String... params) {
             String username = params[0];
             String msg = params[1];
+            String category = params[2]; // Get category from params
+            selectedCategory = params[2];
 
             JSONObject json = new JSONObject();
 
             try {
                 json.put("username", username);
                 json.put("msg", msg);
+                json.put("category", category); // Include category in JSON
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -119,6 +148,10 @@ public class HomeFragment extends Fragment {
             } else {
                 // Вывести сообщение об успешной записи данных
                 Toast.makeText(getContext(), "Данные успешно записаны", Toast.LENGTH_SHORT).show();
+                // Получить выбранную категорию
+
+                // Показать всплывающее окно с подсказкой для выбранной категории
+                showTip(selectedCategory);
             }
         }
     }
