@@ -1,10 +1,16 @@
 package com.example.mchs.ui.home;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,25 +20,31 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 
 import com.example.mchs.databinding.FragmentHomeBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -40,9 +52,14 @@ import okhttp3.Response;
 
 public class HomeFragment extends Fragment {
 
+    private static final int REQUEST_CODE_PICK_IMAGE = 1;
+    private static final int REQUEST_CODE_PERMISSION = 2;
+
     private FragmentHomeBinding binding;
 
     String[] array = {"Пожар", "Сработала сигнализация", "Застрял кот на дереве"};
+
+    private Uri selectedImageUri;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,12 +73,26 @@ public class HomeFragment extends Fragment {
         final TextView name = binding.name;
         final TextView message = binding.message;
         final Button send = binding.send;
+        final Button selectPhoto = binding.selectPhoto;
 
         List<String> list = Arrays.asList(array);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        selectPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            REQUEST_CODE_PERMISSION);
+                } else {
+                    openGallery();
+                }
+            }
+        });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,11 +101,40 @@ public class HomeFragment extends Fragment {
                 String msg = message.getText().toString();
                 String selectedCategory = spinner.getSelectedItem().toString(); // Get selected category
                 new HttpRequestTask().execute(username, msg, selectedCategory);
-
             }
         });
 
         return root;
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == getActivity().RESULT_OK && data != null) {
+            selectedImageUri = data.getData();
+            ImageView imageView = binding.imageView2;
+            imageView.setImageURI(selectedImageUri);
+        }
+    }
+
+    private String getRealPathFromUri(Uri uri) {
+        String realPath;
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            realPath = cursor.getString(column_index);
+            cursor.close();
+            return realPath;
+        } else {
+            return uri.getPath(); // Возвращаем исходный путь, если не удалось получить реальный путь
+        }
     }
 
     private void showTip(String category) {
@@ -96,7 +156,6 @@ public class HomeFragment extends Fragment {
         dialog.show();
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -113,30 +172,37 @@ public class HomeFragment extends Fragment {
             String category = params[2]; // Get category from params
             selectedCategory = params[2];
 
-            JSONObject json = new JSONObject();
-
             try {
-                json.put("username", username);
-                json.put("msg", msg);
-                json.put("category", category); // Include category in JSON
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+                // Получите реальный путь к файлу из Uri
+                String filePath = getRealPathFromUri(selectedImageUri);
 
-            OkHttpClient client = new OkHttpClient();
-            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-            RequestBody requestBody = RequestBody.create(JSON, json.toString());
-            Request request = new Request.Builder()
-                    .url("https://claimbe.store/mchs/index.php")
-                    .post(requestBody)
-                    .build();
+                // Создайте объект MultipartBody.Builder для создания запроса с множественными частями (включая изображение)
+                MultipartBody.Builder builder = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("username", username)
+                        .addFormDataPart("msg", msg)
+                        .addFormDataPart("category", category);
 
-            try {
+                // Загрузите файл в запрос
+                File file = new File(filePath);
+                builder.addFormDataPart("photo", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+
+                // Создайте объект RequestBody из MultipartBody.Builder
+                RequestBody requestBody = builder.build();
+
+                // Создайте объект запроса с использованием OkHttp
+                Request request = new Request.Builder()
+                        .url("https://claimbe.store/mchs/index.php") // Замените на URL вашего сервера
+                        .post(requestBody)
+                        .build();
+
+                // Создайте клиент OkHttp и выполните запрос
+                OkHttpClient client = new OkHttpClient();
+
                 Response response = client.newCall(request).execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
