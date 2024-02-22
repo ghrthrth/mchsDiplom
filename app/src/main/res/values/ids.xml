@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="grid_image" type="id" />
+    <item name="username_text_view" type="id" />
+    <item name="msg_text_view" type="id" />
+    <item name="category_text_view" type="id" />
+    <item name="categ_incident_text_view" type="id" />
+</resources>

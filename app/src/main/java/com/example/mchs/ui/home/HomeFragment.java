@@ -2,7 +2,6 @@ package com.example.mchs.ui.home;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,17 +10,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,9 +28,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.mchs.databinding.FragmentHomeBinding;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +48,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    String[] array = {"Пожар", "Сработала сигнализация", "Застрял кот на дереве"};
+    String[] array = {"Пожар", "Сработала сигнализация", "Застрял кот на дереве", "Умер человек", "Сантехник прорвал трубу"};
 
     private Uri selectedImageUri;
 
@@ -93,6 +84,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+        final String[] ok = new String[1];
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +92,8 @@ public class HomeFragment extends Fragment {
                 String username = name.getText().toString();
                 String msg = message.getText().toString();
                 String selectedCategory = spinner.getSelectedItem().toString(); // Get selected category
-                new HttpRequestTask().execute(username, msg, selectedCategory);
+                ok[0] = checkCategory(array);
+                new HttpRequestTask().execute(username, msg, selectedCategory, ok[0]);
             }
         });
 
@@ -162,8 +155,30 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
+    public String checkCategory(String[] zalupa) {
+        String urgent = "срочно";
+        String notVeryUrgent = "средне";
+        String nonUrgent = "хуйня";
+        String result = "";
+
+        for (String incident : zalupa) {
+            // Add your logic here to determine the urgency level of each incident
+            if (incident.contains("Пожар") || incident.contains("Умер человек")) {
+                result = nonUrgent;
+            } else if (incident.contains("Сработала сигнализация")) {
+                result = notVeryUrgent;
+            } else {
+                result = urgent;
+            }
+        }
+
+        // Do something with the categorized incidents
+        return result;
+    }
+
     private class HttpRequestTask extends AsyncTask<String, Void, String> {
         private String selectedCategory;
+        private String categIncident;
 
         @Override
         protected String doInBackground(String... params) {
@@ -171,6 +186,8 @@ public class HomeFragment extends Fragment {
             String msg = params[1];
             String category = params[2]; // Get category from params
             selectedCategory = params[2];
+            categIncident = params[3];
+
 
             try {
                 // Получите реальный путь к файлу из Uri
@@ -181,7 +198,8 @@ public class HomeFragment extends Fragment {
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("username", username)
                         .addFormDataPart("msg", msg)
-                        .addFormDataPart("category", category);
+                        .addFormDataPart("category", category)
+                        .addFormDataPart("categIncident", categIncident);
 
                 // Загрузите файл в запрос
                 File file = new File(filePath);
