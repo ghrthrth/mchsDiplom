@@ -65,40 +65,38 @@
         android:id="@+id/send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="39dp"
-        android:layout_marginEnd="159dp"
-        android:layout_marginBottom="372dp"
+        android:layout_marginStart="143dp"
+        android:layout_marginEnd="143dp"
+        android:layout_marginBottom="190dp"
         android:text="Отправить"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/selectPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="57dp"
-        android:layout_marginEnd="159dp"
-        android:layout_marginBottom="267dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="227dp"
+        android:layout_marginBottom="151dp"
         android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/send"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/send" />
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/message" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="102dp"
-        android:layout_height="108dp"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="51dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="391dp"
         android:src="@drawable/ic_menu_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectPhoto" />
+        app:layout_constraintTop_toBottomOf="@+id/message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

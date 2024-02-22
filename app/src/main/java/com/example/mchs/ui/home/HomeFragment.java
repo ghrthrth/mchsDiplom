@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        final String[] ok = new String[1];
+
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +92,8 @@ public class HomeFragment extends Fragment {
                 String username = name.getText().toString();
                 String msg = message.getText().toString();
                 String selectedCategory = spinner.getSelectedItem().toString(); // Get selected category
-                ok[0] = checkCategory(array);
-                new HttpRequestTask().execute(username, msg, selectedCategory, ok[0]);
+                String ok = checkCategory(selectedCategory);
+                new HttpRequestTask().execute(username, msg, selectedCategory, ok);
             }
         });
 
@@ -155,26 +155,29 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    public String checkCategory(String[] zalupa) {
+    public String checkCategory(String incidents) {
         String urgent = "срочно";
         String notVeryUrgent = "средне";
-        String nonUrgent = "хуйня";
+        String nonUrgent = "несрочно";
         String result = "";
 
-        for (String incident : zalupa) {
-            // Add your logic here to determine the urgency level of each incident
-            if (incident.contains("Пожар") || incident.contains("Умер человек")) {
+        switch (incidents.toLowerCase()) {
+            case "пожар":
+            case "умер человек":
                 result = nonUrgent;
-            } else if (incident.contains("Сработала сигнализация")) {
-                result = notVeryUrgent;
-            } else {
+                break;
+            case "сработала сигнализация":
                 result = urgent;
-            }
+                break;
+            default:
+                result = notVeryUrgent;
+                break;
         }
 
-        // Do something with the categorized incidents
         return result;
     }
+
+
 
     private class HttpRequestTask extends AsyncTask<String, Void, String> {
         private String selectedCategory;
