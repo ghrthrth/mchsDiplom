@@ -6,31 +6,170 @@
     android:layout_height="match_parent"
     tools:context=".ui.gallery.GalleryFragment">
 
-    <!-- your_layout.xml -->
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="411dp"
-        android:layout_height="577dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:horizontalSpacing="8dp"
-        android:verticalSpacing="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="236dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Международное сотрудничество"
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Сотрудничество с Международным агентством по атомной энергии."
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="РЦУРЧС выполняет функции национального пункта связи в соответствии с Конвенциями «Об оперативном оповещении о ядерной аварии» и «О помощи в случае ядерной или радиационной аварийной ситуации»."
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="РЦУРЧС регулярно участвует в международных учениях ConvEx по подтверждению готовности национальных контактных пунктов к действиям в случае ядерной или радиационной аварии."
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Сотрудничество с Международной Хартией по космосу и крупным катастрофам."
+                android:textSize="14sp"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="РЦУРЧС является авторизированным пользователем Международной Хартии по космосу и крупным катастрофам (далее - Хартия). Получение такого статуса дает возможность РЦУРЧС в случае возникновения крупных ЧС оперативно запрашивать и получать через исполнительный комитет Хартии результаты космической съемки для территории на которой произошла ЧС со спутников космических агентств-участников Хартии."
+                android:textSize="14sp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Мониторинг чрезвычайных ситуаций"
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Система мониторинга и прогнозирования чрезвычайных ситуаций природного и техногенного характера"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="В Республике Беларусь система мониторинга и прогнозирования чрезвычайных ситуаций природного и техногенного характера была создана 19 ноября 2004 года постановлением Совета Министров Республики Беларусь №1466.
+
+Система мониторинга и прогнозирования чрезвычайных ситуаций (далее – СМПЧС) функционирует в рамках Государственной системы предупреждения и ликвидации чрезвычайных ситуаций на республиканском, территориальном и местном уровнях."
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Оперативное управление силами и средствами   "
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Основными функциями отдела являются:"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" - оперативное оповещение и передача экстренных сообщений органам управления по чрезвычайным ситуациям, предупреждение населения о возможных чрезвычайных ситуациях и о порядке действий в условиях чрезвычайных ситуаций;"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" - оперативное привлечение по решению органов управления по чрезвычайным ситуациям в установленном порядке (в соответствии с планами защиты населения и территорий от чрезвычайных ситуаций природного и техногенного характера) сил и средств ликвидации чрезвычайных ситуаций;"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" - обеспечение информационного обмена между органами управления по чрезвычайным ситуациям, решение задач по организации оперативного управления сил и средств по чрезвычайным ситуациям;"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Оповещение и информирование населения и госорганов"
+                android:textSize="34sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="В соответствии с законом Республики Беларусь от 16 июля 2009 г.№ 45-З «Об органах и подразделениях по чрезвычайным ситуациям» на МЧС возложены функции по информированию (оповещению) населения по вопросам предупреждения и ликвидации чрезвычайных ситуаций.
+
+Оповещение и информирование о чрезвычайных ситуациях осуществляется при угрозе возникновения или возникновении чрезвычайных ситуаций природного и техногенного характера в случаях, указанных в постановлении Министерства по чрезвычайным ситуациям Республики Беларусь (далее – МЧС) от 19 февраля 2003 г. № 17 «О классификации чрезвычайных ситуаций природного и техногенного характера», опасностях, возникающих (возникших) при ведении военных действий или вследствие этих действий.
+Основной задачей системы оповещения РЦУРЧС является доведение сигналов оповещения и информации до:"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" - населения на всей территории Республики Беларусь;"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" - комиссии по чрезвычайным ситуациям (далее – КЧС) при Совете Министров Республики Беларусь;"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" - республиканских органов государственного управления, государственных организаций, подчиненных Правительству Республики Беларусь;"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" - областных и Минского городского управлений МЧС Республики Беларусь."
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </ScrollView>
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="171dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="189dp"
-        android:text="Заявки:"
-        android:textSize="16sp"
+        android:layout_marginStart="174dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="179dp"
+        android:text="РЦУРЧС направления деятельности"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

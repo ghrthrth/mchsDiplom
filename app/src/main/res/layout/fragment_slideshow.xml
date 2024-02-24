@@ -6,16 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".ui.slideshow.SlideshowFragment">
 
-    <TextView
-        android:id="@+id/text_slideshow"
+    <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="236dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ВЫВИХ"
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Вывих – это смещение суставных концов костей, частично или полностью нарушающее их взаимное соприкосновение."
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="ПЕРВАЯ ПОМОЩЬ должна состоять, как правило, в фиксации поврежденной конечности, даче обезболивающего препарата и направлении пострадавшего в лечебное учреждение. Фиксация конечности осуществляется повязкой или подвешиванием ее на косынке. При вывихах суставов нижней конечности пострадавший должен быть доставлен в лечебное учреждение в лежачем положении (на носилках), с подкладыванием под конечность подушек, ее фиксацией и даче пострадавшему обезболивающего средства. При оказании первой помощи в неясных случаях, когда не представилось возможным отличить вывих от перелома, с пострадавшим следует поступать так, будто у него явный перелом костей."
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Твой заголовок"
+                android:textSize="34sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Твой подзаголовок"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Твой текст раздела"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
+        android:layout_marginStart="174dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginEnd="179dp"
+        android:text="Правила оказания первой медицинской помощи"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
