@@ -129,13 +129,41 @@ public class HomeFragment extends Fragment {
             return uri.getPath(); // Возвращаем исходный путь, если не удалось получить реальный путь
         }
     }
+    public String getMessageByCategory(String category) {
+        String message;
+
+        switch (category) {
+            case "Пожар":
+                message = "потушите пожар";
+                break;
+            case "Сработала сигнализация":
+                message = "вызовите 102";
+                break;
+            case "Застрял кот на дереве":
+                message = "спустите его вниз";
+                break;
+            case "Умер человек":
+                message = "скорую вызови";
+                break;
+            case "Сантехник прорвал трубу":
+                message = "продай квартиру";
+                break;
+            default:
+                message = "жвите мирно";
+                break;
+        }
+
+        return message;
+    }
+
 
     private void showTip(String category) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Подсказка для категории " + category);
+        builder.setTitle("Что делать при " + category);
 
         // Здесь вы можете установить сообщение в зависимости от категории
-        String message = "Это подсказка для категории " + category;
+
+        String message = getMessageByCategory(category);
         builder.setMessage(message);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
