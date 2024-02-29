@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,9 +78,30 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            REQUEST_CODE_PERMISSION);
+
+                    // Проверяем, было ли разрешение отклонено ранее с выбором "Не спрашивать снова"
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        // Запрашиваем разрешение
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                REQUEST_CODE_PERMISSION);
+                    } else {
+                        // Показываем диалоговое окно с объяснением
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Необходимо разрешение")
+                                .setMessage("Для загрузки изображений из галереи необходимо предоставить разрешение на чтение внешнего хранилища.")
+                                .setPositiveButton("Перейти в настройки", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Перенаправляем пользователя в настройки приложения
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .setNegativeButton("Отмена", null)
+                                .show();
+                    }
                 } else {
                     openGallery();
                 }
@@ -219,12 +242,7 @@ public class HomeFragment extends Fragment {
             selectedCategory = params[2];
             categIncident = params[3];
 
-
             try {
-                // Получите реальный путь к файлу из Uri
-                String filePath = getRealPathFromUri(selectedImageUri);
-
-                // Создайте объект MultipartBody.Builder для создания запроса с множественными частями (включая изображение)
                 MultipartBody.Builder builder = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("username", username)
@@ -232,22 +250,19 @@ public class HomeFragment extends Fragment {
                         .addFormDataPart("category", category)
                         .addFormDataPart("categIncident", categIncident);
 
-                // Загрузите файл в запрос
-                File file = new File(filePath);
-                builder.addFormDataPart("photo", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                if (selectedImageUri != null) {
+                    String filePath = getRealPathFromUri(selectedImageUri);
+                    File file = new File(filePath);
+                    builder.addFormDataPart("photo", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                }
 
-                // Создайте объект RequestBody из MultipartBody.Builder
                 RequestBody requestBody = builder.build();
-
-                // Создайте объект запроса с использованием OkHttp
                 Request request = new Request.Builder()
-                        .url("https://claimbe.store/mchs/index.php") // Замените на URL вашего сервера
+                        .url("https://claimbe.store/mchs/index.php")
                         .post(requestBody)
                         .build();
 
-                // Создайте клиент OkHttp и выполните запрос
                 OkHttpClient client = new OkHttpClient();
-
                 Response response = client.newCall(request).execute();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -258,18 +273,14 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             if (result != null) {
-                // Вывести сообщение об ошибке, если есть
                 Toast.makeText(getContext(), "Ошибка: " + result, Toast.LENGTH_SHORT).show();
             } else {
-                // Вывести сообщение об успешной записи данных
                 Toast.makeText(getContext(), "Данные успешно записаны", Toast.LENGTH_SHORT).show();
-                // Получить выбранную категорию
-
-                // Показать всплывающее окно с подсказкой для выбранной категории
                 showTip(selectedCategory);
             }
         }
     }
+
 }
 
 
