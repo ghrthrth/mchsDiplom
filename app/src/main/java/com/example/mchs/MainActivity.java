@@ -8,13 +8,16 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -67,17 +70,26 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_site) {
+                    // Open the link in the browser
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://mchs.gov.by/"));
+                    startActivity(intent);
+                } else {
+                    // Handle other menu items as usual
+                    DrawerLayout drawer = binding.drawerLayout;
+                    NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main);
+                    NavigationUI.onNavDestinationSelected(item, navController);
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+                return true;
+            }
+        });
+
     }
 
     @Override

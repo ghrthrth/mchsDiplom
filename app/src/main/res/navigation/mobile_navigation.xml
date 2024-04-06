@@ -16,10 +16,17 @@
         android:name="com.example.mchs.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
+
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.mchs.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_site"
+        android:name="com.example.mchs.ui.site.SiteFragment"
+        android:label="@string/menu_site"
+        tools:layout="@layout/fragment_site" />
 
 </navigation>

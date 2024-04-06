@@ -9,8 +9,8 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_width="390dp"
+        android:layout_height="63dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="129dp"
         android:layout_marginEnd="1dp"
@@ -18,7 +18,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
 
     <TextView
         android:id="@+id/textView2"
@@ -37,29 +38,29 @@
 
     <EditText
         android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="172dp"
+        android:layout_width="391dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="224dp"
         android:hint="Введите имя"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="394dp"
+        android:layout_height="53dp"
         android:layout_marginTop="10dp"
         android:gravity="top"
         android:hint="Введите сообщение"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <Button
         android:id="@+id/send"
