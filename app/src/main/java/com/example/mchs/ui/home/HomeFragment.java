@@ -258,7 +258,7 @@ public class HomeFragment extends Fragment {
 
                 RequestBody requestBody = builder.build();
                 Request request = new Request.Builder()
-                        .url("https://claimbe.store/mchs/index.php")
+                        .url("https://claimbes.store/mchs/index.php")
                         .post(requestBody)
                         .build();
 
